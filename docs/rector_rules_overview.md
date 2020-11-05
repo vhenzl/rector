@@ -1,4 +1,12 @@
+<<<<<<< HEAD
 # 627 Rules Overview
+=======
+<<<<<<< HEAD
+# 626 Rules Overview
+=======
+# 624 Rules Overview
+>>>>>>> [CI] enable scoped rector builder
+>>>>>>> 98a52511f... [CI] enable scoped rector builder
 
 <br>
 

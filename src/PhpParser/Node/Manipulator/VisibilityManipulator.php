@@ -116,9 +116,17 @@ final class VisibilityManipulator
         } elseif ($visibility === 'static') {
             $this->makeStatic($node);
         } else {
+<<<<<<< HEAD
             throw new ShouldNotHappenException(sprintf(
                 'Visibility "%s" is not valid. Use one of: ',
                 implode('", "', self::ALLOWED_VISIBILITIES)
+=======
+            $allowedVisibilities = ['public', 'protected', 'private', 'static'];
+
+            throw new ShouldNotHappenException(sprintf(
+                'Visibility "%s" is not valid. Use one of: ',
+                implode('", "', $allowedVisibilities)
+>>>>>>> [CI] enable scoped rector builder
             ));
         }
     }

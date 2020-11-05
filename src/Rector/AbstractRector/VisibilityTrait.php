@@ -36,6 +36,17 @@ trait VisibilityTrait
     public function changeNodeVisibility(Node $node, string $visibility): void
     {
         $this->visibilityManipulator->changeNodeVisibility($node, $visibility);
+<<<<<<< HEAD
+=======
+    }
+
+    /**
+     * @param ClassMethod|Class_ $node
+     */
+    public function makeFinal(Node $node): void
+    {
+        $this->visibilityManipulator->makeFinal($node);
+>>>>>>> [CI] enable scoped rector builder
     }
 
     public function makeFinal(Class_ $class): void

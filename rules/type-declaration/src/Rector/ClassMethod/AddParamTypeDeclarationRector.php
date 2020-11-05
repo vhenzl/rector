@@ -69,7 +69,9 @@ class SomeClass
 }
 CODE_SAMPLE
             , [
-                self::PARAMETER_TYPEHINTS => [new AddParamTypeDeclaration('SomeClass', 'process', 0, new StringType())],
+                self::PARAMETER_TYPEHINTS => [
+                    new AddParamTypeDeclaration('SomeClass', 'process', 0, new StringType()),
+                ],
             ]),
         ]);
     }

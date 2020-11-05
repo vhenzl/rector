@@ -94,6 +94,11 @@ services:
             parentClasses:
                 - Rector
 
+    # see https://github.com/symplify/phpstan-rules
+#    open later
+#    - vendor/symplify/phpstan-rules/config/symplify-rules.neon
+#    - vendor/symplify/phpstan-rules/packages/cognitive-complexity/config/cognitive-complexity-services.neon
+#
 #    -
 #        class: Symplify\PHPStanRules\Rules\PreferredClassRule
 #        tags: [phpstan.rules.rule]
@@ -106,6 +111,7 @@ services:
 #                'phpDocumentor\Reflection\DocBlock\Tags\Return_': 'PhpParser\Node\Stmt\Return_'
 #                'Closure': 'PhpParser\Node\Expr\Closure'
 #                'PHPUnit\TextUI\Configuration\Variable': 'PhpParser\Node\Expr\Variable'
+#                'PhpCsFixer\FixerDefinition\CodeSample': 'Rector\Core\RectorDefinition\CodeSample'
 #                'SebastianBergmann\Type\MixedType': 'PHPStan\Type\MixedType'
 #                'Hoa\Protocol\Node\Node': 'PhpParser\Node'
 #                'Nette\Utils\FileSystem': 'Symplify\SmartFileSystem\SmartFileSystem'
@@ -759,3 +765,11 @@ parameters:
         - '#Method Rector\\BetterPhpDocParser\\Tests\\PhpDocInfo\\PhpDocInfo\\PhpDocInfoTest\:\:createPhpDocInfoFromFile\(\) should return Rector\\BetterPhpDocParser\\PhpDocInfo\\PhpDocInfo but returns Rector\\BetterPhpDocParser\\PhpDocInfo\\PhpDocInfo\|null#'
         # temporary bug in symplify/phpstan-rules
         - '#Parameter 1 should use PhpParser\\Node\\Expr\\MethodCall type as already checked#'
+
+        -
+             message: '#Class cognitive complexity is \d+, keep it under 40#'
+             paths:
+                  - src/Rector/AbstractRector.php
+                  - rules/php80/src/Rector/If_/NullsafeOperatorRector.php
+                  - rules/code-quality/src/Rector/For_/ForToForeachRector.php
+                  - rules/coding-style/src/Rector/Use_/RemoveUnusedAliasRector.php
