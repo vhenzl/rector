@@ -23,8 +23,9 @@ return [
     'files-whitelist' => $whitelistedStubsProvider->provide(),
     'whitelist' => StaticEasyPrefixer::getExcludedNamespacesAndClasses(),
     'patchers' => [
+        // [BEWARE] $filePath is absolute!
         function (string $filePath, string $prefix, string $content): string {
-            if ($filePath !== 'vendor/nette/di/src/DI/Compiler.php') {
+            if (! Strings::endsWith($filePath, 'vendor/nette/di/src/DI/Compiler.php')) {
                 return $content;
             }
 
@@ -35,9 +36,10 @@ return [
             );
         },
         function (string $filePath, string $prefix, string $content): string {
-            if ($filePath !== 'vendor/nette/di/src/DI/Config/DefinitionSchema.php') {
+            if (! Strings::endsWith($filePath, 'vendor/nette/di/src/DI/Config/DefinitionSchema.php')) {
                 return $content;
             }
+
             $content = str_replace(sprintf('\'%s\\\\callable', $prefix), "'callable", $content);
             return str_replace(
                 '|Nette\\\\DI\\\\Definitions\\\\Statement',
@@ -46,7 +48,7 @@ return [
             );
         },
         function (string $filePath, string $prefix, string $content): string {
-            if ($filePath !== 'vendor/nette/di/src/DI/Extensions/ExtensionsExtension.php') {
+            if (! Strings::endsWith($filePath, 'vendor/nette/di/src/DI/Extensions/ExtensionsExtension.php')) {
                 return $content;
             }
 
@@ -58,7 +60,7 @@ return [
             );
         },
         function (string $filePath, string $prefix, string $content): string {
-            if ($filePath !== 'vendor/phpstan/phpstan-src/src/Testing/TestCase.php') {
+            if (! Strings::endsWith($filePath, 'vendor/phpstan/phpstan-src/src/Testing/TestCase.php')) {
                 return $content;
             }
 
@@ -69,7 +71,7 @@ return [
             );
         },
         function (string $filePath, string $prefix, string $content): string {
-            if ($filePath !== 'vendor/phpstan/phpstan-src/src/Testing/LevelsTestCase.php') {
+            if (! Strings::endsWith($filePath, 'vendor/phpstan/phpstan-src/src/Testing/LevelsTestCase.php')) {
                 return $content;
             }
 
@@ -136,7 +138,7 @@ return [
 
         // mimics https://github.com/phpstan/phpstan-src/commit/fd8f0a852207a1724ae4a262f47d9a449de70da4#diff-463a36e4a5687fb2366b5ee56cdad92d
         function (string $filePath, string $prefix, string $content): string {
-            if (! Strings::match($filePath, '#^(config|src|rules|packages)\/#')) {
+            if (! Strings::match($filePath, '#phpstan-src\/(config|src|rules|packages)\/#')) {
                 return $content;
             }
 

@@ -16,6 +16,8 @@ final class StaticEasyPrefixer
         'Symfony\Component\Console\Style\SymfonyStyle',
         // part of public interface of configs.php
         'Symfony\Component\DependencyInjection\Loader\Configurator\ContainerConfigurator',
+        // this is not prefixed by php-scoper by default, probably some bug
+        'Doctrine\Inflector\Inflector',
     ];
 
     /**

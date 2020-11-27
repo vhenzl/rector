@@ -105,6 +105,14 @@ final class VisibilityManipulator
     /**
      * @param ClassMethod|Property|ClassConst $node
      */
+    public function makePublic(Node $node): void
+    {
+        $this->replaceVisibilityFlag($node, 'public');
+    }
+
+    /**
+     * @param ClassMethod|Property|ClassConst $node
+     */
     public function changeNodeVisibility(Node $node, string $visibility): void
     {
         if ($visibility === 'public') {
@@ -116,27 +124,11 @@ final class VisibilityManipulator
         } elseif ($visibility === 'static') {
             $this->makeStatic($node);
         } else {
-<<<<<<< HEAD
             throw new ShouldNotHappenException(sprintf(
                 'Visibility "%s" is not valid. Use one of: ',
                 implode('", "', self::ALLOWED_VISIBILITIES)
-=======
-            $allowedVisibilities = ['public', 'protected', 'private', 'static'];
-
-            throw new ShouldNotHappenException(sprintf(
-                'Visibility "%s" is not valid. Use one of: ',
-                implode('", "', $allowedVisibilities)
->>>>>>> [CI] enable scoped rector builder
             ));
         }
-    }
-
-    /**
-     * @param ClassMethod|Property|ClassConst $node
-     */
-    public function makePublic(Node $node): void
-    {
-        $this->replaceVisibilityFlag($node, 'public');
     }
 
     /**
@@ -153,6 +145,20 @@ final class VisibilityManipulator
     public function makePrivate(Node $node): void
     {
         $this->replaceVisibilityFlag($node, 'private');
+    }
+
+    /**
+     * @param ClassMethod|Property|ClassConst $node
+     */
+    private function replaceVisibilityFlag(Node $node, string $visibility): void
+    {
+        $visibility = strtolower($visibility);
+
+        if ($visibility !== self::STATIC && $visibility !== self::ABSTRACT && $visibility !== self::FINAL) {
+            $this->removeOriginalVisibilityFromFlags($node);
+        }
+
+        $this->addVisibilityFlag($node, $visibility);
     }
 
     /**

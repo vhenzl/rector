@@ -29,12 +29,13 @@ jobs:
                     tools: composer:v2
                 # fixes https://github.com/rectorphp/rector/pull/4559/checks?check_run_id=1359814403, see https://github.com/shivammathur/setup-php#composer-github-oauth
                 env:
-                    COMPOSER_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+                    COMPOSER_TOKEN: ${{ secrets.ACCESS_TOKEN }}
 
             # 1. prepare dependencies
             # replace phpstan.phar with phpstan-src, see https://github.com/phpstan/phpstan-src
             -   run: composer remove phpstan/phpstan --no-update
             -   run: composer config repositories.repo-name vcs https://github.com/phpstan/phpstan-src.git
+
             -   run: composer require phpstan/phpstan-src:@dev --no-update
             # mimics PHPStan https://github.com/phpstan/phpstan-src/blob/d3be969b13654394d0186b9597449d44477f0012/composer.json#L17
             -   run: composer require jetbrains/phpstorm-stubs:dev-master#05d145c0bbafcf9a551fdd8824adb2a7e259fdaf --no-update
@@ -53,11 +54,18 @@ jobs:
 
             # 2. scope it
             -   run: wget https://github.com/humbug/php-scoper/releases/download/0.13.9/php-scoper.phar
-            -   run: php php-scoper.phar add-prefix nested-rector --output-dir rector-scoped --config nested-rector/scoper.inc.php --force --ansi
+            -
+                # to make paths in scoper.inc.php work, as the are relative
+                run: cd nested-rector && php ../php-scoper.phar add-prefix bin config packages rules src templates vendor composer.json --output-dir ../rector-scoped --config scoper.inc.php --force --ansi -vvv
+
+            -   run: bin/rector process rector-scoped/vendor/composer/platform_check.php --config ci/downgrade-php71-rector-scoped.php
+
             -   run: composer dump-autoload --working-dir rector-scoped --ansi --optimize --classmap-authoritative
 
             # 2.5 scope composer.json
             -   run: vendor/bin/package-scoper scope-composer-json rector-scoped/composer.json --ansi
+
+            -   run: rm rector-scoped/phpstan.neon
 
             # 3. run it
             -   run: chmod 777 rector-scoped/bin/rector

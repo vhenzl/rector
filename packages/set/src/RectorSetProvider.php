@@ -35,14 +35,8 @@ final class RectorSetProvider extends AbstractSetProvider
 
     public function __construct()
     {
-<<<<<<< HEAD
-        $setListClasses = [SetList::class, DowngradeSetList::class];
-        foreach ($setListClasses as $setListClass) {
+        foreach (self::SET_CLASSES as $setListClass) {
             $setListReflectionClass = new ReflectionClass($setListClass);
-=======
-        foreach (self::SET_CLASSES as $setClass) {
-            $setListReflectionClass = new ReflectionClass($setClass);
->>>>>>> [CI] enable scoped rector builder
             $this->hydrateSetsFromConstants($setListReflectionClass);
         }
     }

@@ -10,11 +10,6 @@ composer.lock
 rector-recipe.php
 
 # testing
-<<<<<<< HEAD
 abz
 /rector-temp-phpstan*.neon
-=======
-/rector-temp-phpstan*.neon
-
 php-scoper.phar
->>>>>>> [CI] enable scoped rector builder

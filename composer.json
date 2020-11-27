@@ -30,15 +30,15 @@
         "symfony/finder": "^4.4.8|^5.1",
         "symfony/http-kernel": "^4.4.8|^5.1",
         "symplify/autowire-array-parameter": "dev-master",
-        "symplify/skipper": "dev-master",
         "symplify/composer-json-manipulator": "dev-master",
         "symplify/console-color-diff": "dev-master",
         "symplify/package-builder": "dev-master",
         "symplify/php-config-printer": "dev-master",
+        "symplify/rule-doc-generator": "dev-master",
         "symplify/set-config-resolver": "dev-master",
         "symplify/simple-php-doc-parser": "dev-master",
+        "symplify/skipper": "dev-master",
         "symplify/smart-file-system": "dev-master",
-        "symplify/rule-doc-generator": "dev-master",
         "webmozart/assert": "^1.9"
     },
     "require-dev": {
@@ -317,8 +317,7 @@
         "rector": "bin/rector process --config rector-ci.php --ansi"
     },
     "config": {
-        "sort-packages": true,
-        "process-timeout": 0
+        "sort-packages": true
     },
     "extra": {
         "patches": {
