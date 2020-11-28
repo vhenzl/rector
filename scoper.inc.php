@@ -12,8 +12,8 @@ use Nette\Utils\Strings;
 use Rector\Compiler\PhpScoper\StaticEasyPrefixer;
 use Rector\Compiler\PhpScoper\WhitelistedStubsProvider;
 
-require_once __DIR__ . '/packages/compiler/src/PhpScoper/StaticEasyPrefixer.php';
-require_once __DIR__ . '/packages/compiler/src/PhpScoper/WhitelistedStubsProvider.php';
+require_once __DIR__ . '/utils/compiler/src/PhpScoper/StaticEasyPrefixer.php';
+require_once __DIR__ . '/utils/compiler/src/PhpScoper/WhitelistedStubsProvider.php';
 
 $whitelistedStubsProvider = new WhitelistedStubsProvider();
 
@@ -24,16 +24,19 @@ return [
     'whitelist' => StaticEasyPrefixer::getExcludedNamespacesAndClasses(),
     'patchers' => [
         // [BEWARE] $filePath is absolute!
+        // related to Composer 2 naming
         function (string $filePath, string $prefix, string $content): string {
             if (! Strings::endsWith($filePath, 'vendor/composer/autoload_real.php')) {
                 return $content;
             }
 
-            return str_replace(
-                '\'Composer\\Autoload\\ClassLoader',
-                '\'' . $prefix . '\\Composer\\Autoload\\ClassLoader',
+            $content = str_replace(
+                "'Composer\\\\Autoload\\\\ClassLoader",
+                "'" . $prefix . '\\\\Composer\\\\Autoload\\\\ClassLoader',
                 $content
             );
+
+            return $content;
         },
         function (string $filePath, string $prefix, string $content): string {
             if (! Strings::endsWith($filePath, 'vendor/nette/di/src/DI/Compiler.php')) {
@@ -52,6 +55,7 @@ return [
             }
 
             $content = str_replace(sprintf('\'%s\\\\callable', $prefix), "'callable", $content);
+
             return str_replace(
                 '|Nette\\\\DI\\\\Definitions\\\\Statement',
                 sprintf('|%s\\\\Nette\\\\DI\\\\Definitions\\\\Statement', $prefix),
