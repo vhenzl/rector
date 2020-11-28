@@ -99,7 +99,7 @@ final class ComposerPackageAutoloadUpdater
      */
     private function isPackageAlreadyLoaded(array $composerJson, Package $package): bool
     {
-        foreach (['autoload', self::AUTOLOAD_DEV] as $autoloadSection) {
+        foreach ([self::AUTOLOAD, self::AUTOLOAD_DEV] as $autoloadSection) {
             if (isset($composerJson[$autoloadSection][self::PSR_4][$package->getSrcNamespace()])) {
                 return true;
             }
@@ -110,7 +110,6 @@ final class ComposerPackageAutoloadUpdater
 
     private function rebuildAutoload(): void
     {
-        $composerDumpProcess = new Process(['composer', 'dump']);
-        $composerDumpProcess->run();
+        exec('composer dump');
     }
 }
