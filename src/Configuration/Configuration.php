@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Rector\Core\Configuration;
 
 use Jean85\PrettyVersions;
-use OndraM\CiDetector\CiDetector;
 use Rector\ChangesReporting\Output\CheckstyleOutputFormatter;
 use Rector\ChangesReporting\Output\JsonOutputFormatter;
 use Rector\Core\Exception\Configuration\InvalidConfigurationException;
@@ -162,10 +161,6 @@ final class Configuration
 
     public function showProgressBar(): bool
     {
-        if ($this->ciDetector->isCiDetected()) {
-            return false;
-        }
-
         if ($this->isCacheDebug) {
             return false;
         }
