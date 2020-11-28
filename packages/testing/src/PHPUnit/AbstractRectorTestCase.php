@@ -515,6 +515,10 @@ abstract class AbstractRectorTestCase extends AbstractKernelTestCase
         $phpConfigPrinterFactory = new PhpConfigPrinterFactory();
         $smartPhpConfigPrinter = $phpConfigPrinterFactory->create();
 
+        dump($smartPhpConfigPrinter);
+        dump($rectorClassesWithConfiguration);
+        die;
+
         $fileContent = $smartPhpConfigPrinter->printConfiguredServices($rectorClassesWithConfiguration);
         $this->smartFileSystem->dumpFile($filePath, $fileContent);
     }
