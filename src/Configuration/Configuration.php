@@ -71,11 +71,6 @@ final class Configuration
     private $paths = [];
 
     /**
-     * @var CiDetector
-     */
-    private $ciDetector;
-
-    /**
      * @var ParameterProvider
      */
     private $parameterProvider;
@@ -90,9 +85,8 @@ final class Configuration
      */
     private $configFileInfo;
 
-    public function __construct(CiDetector $ciDetector, ParameterProvider $parameterProvider)
+    public function __construct(ParameterProvider $parameterProvider)
     {
-        $this->ciDetector = $ciDetector;
         $this->isCacheEnabled = (bool) $parameterProvider->provideParameter(Option::ENABLE_CACHE);
         $this->fileExtensions = (array) $parameterProvider->provideParameter(Option::FILE_EXTENSIONS);
         $this->paths = (array) $parameterProvider->provideParameter(Option::PATHS);
