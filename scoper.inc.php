@@ -25,6 +25,17 @@ return [
     'patchers' => [
         // [BEWARE] $filePath is absolute!
         function (string $filePath, string $prefix, string $content): string {
+            if (! Strings::endsWith($filePath, 'vendor/composer/autoload_real.php')) {
+                return $content;
+            }
+
+            return str_replace(
+                '\'Composer\\Autoload\\ClassLoader',
+                '\'' . $prefix . '\\Composer\\Autoload\\ClassLoader',
+                $content
+            );
+        },
+        function (string $filePath, string $prefix, string $content): string {
             if (! Strings::endsWith($filePath, 'vendor/nette/di/src/DI/Compiler.php')) {
                 return $content;
             }
