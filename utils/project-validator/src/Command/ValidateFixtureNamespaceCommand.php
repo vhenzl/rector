@@ -42,7 +42,13 @@ final class ValidateFixtureNamespaceCommand extends Command
     {
         $fixtureFiles = $this->getFixtureFiles();
         foreach ($fixtureFiles as $fixtureFile) {
-            //echo $fixtureFile . PHP_EOL;
+            list(, $relativePath) = explode(getcwd(), (string) $fixtureFile);
+            $relativePath         = ltrim(pathinfo($relativePath, \PATHINFO_DIRNAME), '\/');
+            $backslashedPath      = str_replace('/', '\\', $relativePath);
+
+            if (strpos($backslashedPath, 'tests\\') === 0) {
+                $expectedNamespace = 'Rector\Core\Tests' . substr($backslashedPath, 5);
+            }
         }
 
         $this->symfonyStyle->success('All fixtures are correct');
