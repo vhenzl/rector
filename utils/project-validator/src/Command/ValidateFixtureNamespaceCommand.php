@@ -62,6 +62,8 @@ final class ValidateFixtureNamespaceCommand extends Command
             $match       = Strings::match($fileContent, '#^namespace (.*);$#msU');
 
             if (! $match) {
+                // 3. collect files with no namespace
+                $incorrectNamespaceFiles[] = (string) $fixtureFile;
                 continue;
             }
 
@@ -69,6 +71,7 @@ final class ValidateFixtureNamespaceCommand extends Command
                 continue;
             }
 
+            // 3. collect files with incorrect namespace
             $incorrectNamespaceFiles[] = (string) $fixtureFile;
         }
 
@@ -91,6 +94,7 @@ final class ValidateFixtureNamespaceCommand extends Command
         $finder = $finder->files()
             ->name('#\.php\.inc$#')
             ->path('#/Fixture/#')
+            ->notPath('#/blade-template/#')
             ->in(__DIR__ . '/../../../../tests')
             ->in(__DIR__ . '/../../../../packages/*/tests')
             ->in(__DIR__ . '/../../../../rules/*/tests');
