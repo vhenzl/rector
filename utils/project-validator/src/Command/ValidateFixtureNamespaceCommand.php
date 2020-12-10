@@ -97,6 +97,22 @@ final class ValidateFixtureNamespaceCommand extends Command
             return 'Rector\Core\Tests' . substr($backslashedPath, 5);
         }
 
+        if (strpos($backslashedPath, 'rules\\') === 0) {
+            $namespaces     = explode('\\', $backslashedPath);
+            unset($namespaces[0]);
+            $namespaces[1]  = ucfirst($namespaces[1]);
+            $namespaces[1]  = preg_replace_callback('#-(\w)#', function ($value) {
+                if (is_array($value)) {
+                    return strtoupper($value[1]);
+                }
+
+                return strtoupper($value);
+            }, $namespaces[1]);
+            $namespaces[2]  = 'Tests';
+
+            return 'Rector\\' . implode('\\', $namespaces);
+        }
+
         return null;
     }
 
