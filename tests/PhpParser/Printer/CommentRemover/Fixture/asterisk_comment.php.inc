@@ -11,6 +11,7 @@ $value = 1;
 
 namespace Rector\Core\Tests\PhpParser\Printer\CommentRemover\Fixture;
 
+
 $value = 1;
 
 ?>
