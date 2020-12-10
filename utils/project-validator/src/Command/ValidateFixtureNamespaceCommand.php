@@ -65,6 +65,10 @@ final class ValidateFixtureNamespaceCommand extends Command
                 continue;
             }
 
+            if ($match[1] === $expectedNamespace) {
+                continue;
+            }
+
             $incorrectNamespaceFiles[] = (string) $fixtureFile;
         }
 
