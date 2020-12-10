@@ -57,7 +57,7 @@ final class ValidateFixtureNamespaceCommand extends Command
             }
 
             // 2. reading file contents
-            $fileContent = file_get_contents((string) $fixtureFile);
+            $fileContent = (string) file_get_contents((string) $fixtureFile);
             // @see https://regex101.com/r/5KtBi8/2
             $match       = Strings::match($fileContent, '#^namespace (.*);$#msU');
 
@@ -88,7 +88,10 @@ final class ValidateFixtureNamespaceCommand extends Command
         return ShellCode::SUCCESS;
     }
 
-    private function getFixtureFiles()
+    /**
+     * @return SmartFileInfo[]
+     */
+    private function getFixtureFiles(): array
     {
         $finder = new Finder();
         $finder = $finder->files()
