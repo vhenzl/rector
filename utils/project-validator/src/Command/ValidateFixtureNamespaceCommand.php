@@ -67,7 +67,7 @@ final class ValidateFixtureNamespaceCommand extends Command
                 continue;
             }
 
-            if (count($matchAll) === 1 && $matchAll[0] === $expectedNamespace) {
+            if (count($matchAll) === 1 && $matchAll[0][1] === $expectedNamespace) {
                 continue;
             }
 
