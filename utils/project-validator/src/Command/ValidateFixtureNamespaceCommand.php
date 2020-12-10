@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Rector\Utils\ProjectValidator\Command;
 
+use Nette\Utils\Strings;
+use const PATHINFO_DIRNAME;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -12,7 +14,6 @@ use Symfony\Component\Finder\Finder;
 use Symplify\PackageBuilder\Console\ShellCode;
 use Symplify\SmartFileSystem\Finder\FinderSanitizer;
 use Symplify\SmartFileSystem\SmartFileInfo;
-use Nette\Utils\Strings;
 
 final class ValidateFixtureNamespaceCommand extends Command
 {
@@ -41,25 +42,26 @@ final class ValidateFixtureNamespaceCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $fixtureFiles            = $this->getFixtureFiles();
+        $fixtureFiles = $this->getFixtureFiles();
         $incorrectNamespaceFiles = [];
 
         foreach ($fixtureFiles as $key => $fixtureFile) {
             // 1. geting expected namespace ...
-            list(, $relativePath) = explode(getcwd(), (string) $fixtureFile);
-            $relativePath         = ltrim(pathinfo($relativePath, \PATHINFO_DIRNAME), '\/');
-            $backslashedPath      = str_replace('/', '\\', $relativePath);
+            [, $relativePath] = explode(getcwd(), (string) $fixtureFile);
+            $relativePath = ltrim(pathinfo($relativePath, PATHINFO_DIRNAME), '\/');
+            $backslashedPath = str_replace('/', '\\', $relativePath);
 
             if (strpos($backslashedPath, 'tests\\') === 0) {
                 $expectedNamespace = 'Rector\Core\Tests' . substr($backslashedPath, 5);
             } else {
-                continue; // temporary only check for tests/
+                // temporary only check for tests/
+                continue;
             }
 
             // 2. reading file contents
             $fileContent = (string) file_get_contents((string) $fixtureFile);
             // @see https://regex101.com/r/5KtBi8/2
-            $matchAll       = Strings::matchAll($fileContent, '#^namespace (.*);$#msU');
+            $matchAll = Strings::matchAll($fileContent, '#^namespace (.*);$#msU');
 
             if (! $matchAll) {
                 // 3. collect files with no namespace
@@ -67,11 +69,7 @@ final class ValidateFixtureNamespaceCommand extends Command
                 continue;
             }
 
-            if (count($matchAll) === 1 && $matchAll[0][1] === $expectedNamespace) {
-                continue;
-            }
-
-            if (count($matchAll) === 2 && $matchAll[0][1] === $expectedNamespace && $matchAll[1][1] === $expectedNamespace) {
+            if ($this->isFoundIncorrectNamespace($matchAll, $expectedNamespace)) {
                 continue;
             }
 
@@ -81,7 +79,10 @@ final class ValidateFixtureNamespaceCommand extends Command
 
         if ($incorrectNamespaceFiles !== []) {
             $this->symfonyStyle->listing($incorrectNamespaceFiles);
-            $message = sprintf('Found %d files with invalid namespace. Please follow psr-4 defined in composer.json', count($incorrectNamespaceFiles));
+            $message = sprintf(
+                'Found %d files with invalid namespace. Please follow psr-4 defined in composer.json',
+                count($incorrectNamespaceFiles)
+            );
 
             $this->symfonyStyle->error($message);
 
@@ -90,6 +91,19 @@ final class ValidateFixtureNamespaceCommand extends Command
 
         $this->symfonyStyle->success('All fixtures are correct');
         return ShellCode::SUCCESS;
+    }
+
+    /**
+     * @param array<int, array<int, string>> $matchAll
+     */
+    private function isFoundIncorrectNamespace(array $matchAll, string $expectedNamespace): bool
+    {
+        $countMatchAll = count($matchAll);
+        if ($countMatchAll === 1 && $matchAll[0][1] === $expectedNamespace) {
+            return true;
+        }
+
+        return $countMatchAll === 2 && $matchAll[0][1] === $expectedNamespace && $matchAll[1][1] === $expectedNamespace;
     }
 
     /**
