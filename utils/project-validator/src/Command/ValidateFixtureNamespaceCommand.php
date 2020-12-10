@@ -50,11 +50,9 @@ final class ValidateFixtureNamespaceCommand extends Command
             [, $relativePath] = explode(getcwd(), (string) $fixtureFile);
             $relativePath = ltrim(pathinfo($relativePath, PATHINFO_DIRNAME), '\/');
             $backslashedPath = str_replace('/', '\\', $relativePath);
+            $expectedNamespace = $this->getExpectedNamespace($backslashedPath);
 
-            if (strpos($backslashedPath, 'tests\\') === 0) {
-                $expectedNamespace = 'Rector\Core\Tests' . substr($backslashedPath, 5);
-            } else {
-                // temporary only check for tests/
+            if ($expectedNamespace === null) {
                 continue;
             }
 
@@ -91,6 +89,15 @@ final class ValidateFixtureNamespaceCommand extends Command
 
         $this->symfonyStyle->success('All fixtures are correct');
         return ShellCode::SUCCESS;
+    }
+
+    private function getExpectedNamespace(string $backslashedPath): ?string
+    {
+        if (strpos($backslashedPath, 'tests\\') === 0) {
+            return 'Rector\Core\Tests' . substr($backslashedPath, 5);
+        }
+
+        return null;
     }
 
     /**
