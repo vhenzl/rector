@@ -44,7 +44,7 @@ final class ValidateFixtureNamespaceCommand extends Command
         $fixtureFiles            = $this->getFixtureFiles();
         $incorrectNamespaceFiles = [];
 
-        foreach ($fixtureFiles as $fixtureFile) {
+        foreach ($fixtureFiles as $key => $fixtureFile) {
             // 1. geting expected namespace ...
             list(, $relativePath) = explode(getcwd(), (string) $fixtureFile);
             $relativePath         = ltrim(pathinfo($relativePath, \PATHINFO_DIRNAME), '\/');
@@ -59,15 +59,19 @@ final class ValidateFixtureNamespaceCommand extends Command
             // 2. reading file contents
             $fileContent = (string) file_get_contents((string) $fixtureFile);
             // @see https://regex101.com/r/5KtBi8/2
-            $match       = Strings::match($fileContent, '#^namespace (.*);$#msU');
+            $matchAll       = Strings::matchAll($fileContent, '#^namespace (.*);$#msU');
 
-            if (! $match) {
+            if (! $matchAll) {
                 // 3. collect files with no namespace
                 $incorrectNamespaceFiles[] = (string) $fixtureFile;
                 continue;
             }
 
-            if ($match[1] === $expectedNamespace) {
+            if (count($matchAll) === 1 && $matchAll[0] === $expectedNamespace) {
+                continue;
+            }
+
+            if (count($matchAll) === 2 && $matchAll[0][1] === $expectedNamespace && $matchAll[1][1] === $expectedNamespace) {
                 continue;
             }
 
