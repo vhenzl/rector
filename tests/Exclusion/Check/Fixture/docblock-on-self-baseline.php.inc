@@ -3,7 +3,7 @@
 namespace Rector\Core\Tests\Exclusion\Check\Fixture;
 
 
-final class SomeController
+final class SomeController3
 {
     public function foo()
     {
@@ -22,7 +22,7 @@ final class SomeController
 namespace Rector\Core\Tests\Exclusion\Check\Fixture;
 
 
-final class SomeController
+final class SomeController3
 {
 }
 

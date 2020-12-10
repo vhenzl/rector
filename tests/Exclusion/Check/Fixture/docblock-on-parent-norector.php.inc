@@ -3,7 +3,7 @@
 namespace Rector\Core\Tests\Exclusion\Check\Fixture;
 
 
-final class SomeController
+final class SomeController2
 {
     public function foo()
     {

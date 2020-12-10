@@ -3,7 +3,7 @@
 namespace Rector\Core\Tests\Exclusion\Check\Fixture;
 
 
-final class SomeController
+final class SomeController4
 {
     /**
      * @noRector Rector\DeadCode\Rector\ClassMethod\RemoveEmptyClassMethodRector
