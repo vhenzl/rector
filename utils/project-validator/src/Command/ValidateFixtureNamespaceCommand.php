@@ -100,6 +100,7 @@ final class ValidateFixtureNamespaceCommand extends Command
         $finder = new Finder();
         $finder = $finder->files()
             ->name('#\.php\.inc$#')
+            ->notName('#empty_file\.php\.inc$#')
             ->path('#/Fixture/#')
             ->notPath('#/blade-template/#')
             ->in(__DIR__ . '/../../../../tests')
