@@ -25,7 +25,7 @@ use Rector\StaticTypeMapper\StaticTypeMapper;
 use ReflectionProperty;
 
 /**
- * @see \Rector\NodeTypeResolver\Tests\PerNodeTypeResolver\NameTypeResolver\NameTypeResolverTest
+ * @see \Rector\NodeTypeResolver\Tests\PerNodeTypeResolver\PropertyFetchTypeResolver\PropertyFetchTypeResolverTest
  */
 final class PropertyFetchTypeResolver implements NodeTypeResolverInterface
 {
