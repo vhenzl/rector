@@ -17,17 +17,29 @@ return static function (ContainerConfigurator $containerConfigurator): void {
     $services->set(RenameClassRector::class)
         ->call('configure', [[
             RenameClassRector::OLD_TO_NEW_CLASSES => [
-                'Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy' => 'Symfony\Component\EventDispatcher\EventDispatcherInterface'
-            ]
+                'Symfony\Component\EventDispatcher\LegacyEventDispatcherProxy' => 'Symfony\Component\EventDispatcher\EventDispatcherInterface',
+            ],
         ]]);
 
     $services->set(RenameMethodRector::class)
         ->call('configure', [[
             RenameMethodRector::METHOD_CALL_RENAMES => ValueObjectInliner::inline([
-                new MethodCallRename('Symfony\Component\Config\Definition\BaseNode', 'getDeprecationMessage','getDeprecation'),
-                new MethodCallRename('Symfony\Component\DependencyInjection\Definition', 'getDeprecationMessage','getDeprecation'),
-                new MethodCallRename('Symfony\Component\DependencyInjection\Alias', 'getDeprecationMessage','getDeprecation'),
-            ])
+                new MethodCallRename(
+                    'Symfony\Component\Config\Definition\BaseNode',
+                    'getDeprecationMessage',
+                    'getDeprecation'
+                ),
+                new MethodCallRename(
+                    'Symfony\Component\DependencyInjection\Definition',
+                    'getDeprecationMessage',
+                    'getDeprecation'
+                ),
+                new MethodCallRename(
+                    'Symfony\Component\DependencyInjection\Alias',
+                    'getDeprecationMessage',
+                    'getDeprecation'
+                ),
+            ]),
         ]]);
 
     $services->set(RenameFunctionRector::class)
@@ -35,6 +47,6 @@ return static function (ContainerConfigurator $containerConfigurator): void {
             RenameFunctionRector::OLD_FUNCTION_TO_NEW_FUNCTION => [
                 'Symfony\Component\DependencyInjection\Loader\Configuraton\inline' => 'Symfony\Component\DependencyInjection\Loader\Configuraton\inline_service',
                 'Symfony\Component\DependencyInjection\Loader\Configuraton\ref' => 'Symfony\Component\DependencyInjection\Loader\Configuraton\service',
-            ]
+            ],
         ]]);
 };
