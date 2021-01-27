@@ -540,3 +540,6 @@ parameters:
                 - rules/removing-static/tests/Rector/Property/DesiredPropertyClassMethodTypeToDynamicRector/config/some_config.php
 
         - '#Content of method "mapToPhpParserNode\(\)" is duplicated with method "mapToPhpParserNode\(\)" in "Rector\\PHPStanStaticTypeMapper\\TypeMapper\\ClosureTypeMapper" class\. Use unique content or abstract service instead#'
+
+        - '#Class Rector\\NodeTypeResolver\\Tests\\PerNodeTypeResolver\\PropertyFetchTypeResolver\\Source\\IDontExist not found\.#'
+        - '#Class A\\B\\C\\IDontExist not found\.#'
